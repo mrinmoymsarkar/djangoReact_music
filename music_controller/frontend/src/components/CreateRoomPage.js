@@ -14,7 +14,29 @@ import FormControlLabel from "@material-ui/core/FormControlLabel";
 export default class CreateRoomPage extends Component{
     constructor(props){
         super(props);
+        this.state = {
+            guestCanPause:true,
+            votesToSkip: this.defaultVotes,
+        }
     }
+
+    handleVotesChange=(e)=>{
+        this.setState(
+            {votesToSkip:e.target.value}
+        )
+    }
+
+    handleGuestCanPauseChange=(e)=>{
+        this.setState(
+            {guestCanPause:e.target.value === 'true'}
+        )
+    }
+
+    handleRoomButtonPressed = ()=>{
+        console.log('fsdf',this.state);
+    }
+
+
     render() {
         return (
             <Grid container spacing={1}>
@@ -22,6 +44,59 @@ export default class CreateRoomPage extends Component{
                     <Typography component="h4" variant="h4">
                         Create Room
                     </Typography>
+                </Grid>
+                <Grid item xs={12} align = "center">
+                    <FormControl component="fieldset">
+                        <FormHelperText>
+                            <div align="center">
+                                Guest control of Playback State
+                            </div>
+                        </FormHelperText>
+                        <RadioGroup row
+                                    defaultValue="true"
+                        onChange={this.handleGuestCanPauseChange}>
+                            <FormControlLabel
+                            value="true"
+                            control={<Radio color="primary" />}
+                            label="Play/Pause"
+                            labelPlacement="bottom"
+                            />
+                            <FormControlLabel
+                            value="false"
+                            control={<Radio color="secondary" />}
+                            label="Play/Pause"
+                            labelPlacement="bottom"
+                            />
+                        </RadioGroup>
+                        </FormControl>
+                </Grid>
+                <Grid item xs={12} align = "center">
+                    <FormControl>
+                      <TextField
+                      required={true}
+                    defaultValue={this.defaultVotes}
+                        inputProps={
+                            {
+                                min: 1,
+                                style: {textAlign: "center"}
+                            }}
+                      onChange={this.handleVotesChange}
+                      />
+                        <FormHelperText>
+                            <div align="center">
+                            Votes required to skip song
+                        </div>
+                        </FormHelperText>
+                    </FormControl>
+                </Grid>
+                <Grid item xs={12} align = "center">
+                    <Button color = "primary" variant="contained" onClick={this.handleRoomButtonPressed}>
+                        Create a Room</Button>
+                </Grid>
+                <Grid item xs={12} align = "center">
+                    <Button color = "secondary" variant="contained" to="/"
+                    component={Link}>
+                       Back</Button>
                 </Grid>
             </Grid>
         );
