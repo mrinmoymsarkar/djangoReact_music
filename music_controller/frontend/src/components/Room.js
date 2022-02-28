@@ -1,13 +1,6 @@
 import React, {Component} from "react";
- import { useParams } from 'react-router-dom';
+import  withRouter from "./../HOC/withRouter";
 
-  export function withRouter(Children){
-     return(props)=>{
-
-        const match  = {params: useParams()};
-        return <Children {...props}  match = {match}/>
-    }
-  }
 
  class Room extends Component {
     constructor(props) {
@@ -18,16 +11,28 @@ import React, {Component} from "react";
             isHost: false,
         };
         this.roomCode = this.props.match.params.roomCode;
-
+        this.fetchRoomDetails();
     }
+          fetchRoomDetails=()=>{
+            fetch('/api/get-room?code=' + this.roomCode)
+                .then(response =>response.json())
+                .then((data)=>{
+                this.setState({
+                    votesToSkip: data.votes_to_skip,
+                    guestcanPause: data.guest_can_pause,
+                    isHost: data.is_host,
+                })
+            })
+              console.log(this.props.match);
+        }
 
     render() {
         return (
             <div>
                 <h3>{this.roomCode}</h3>
         <p>Votes: {this.state.votesToSkip}</p>
-        <p>Guest Can Pause: {this.state.guestCanPause}</p>
-        <p>Host: {this.state.isHost}</p>
+        <p>Guest Can Pause: {this.state.guestCanPause.toString()}</p>
+        <p>Host: {this.state.isHost.toString()}</p>
       </div>
         )
     }

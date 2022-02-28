@@ -9,9 +9,9 @@ import { Link } from "react-router-dom";
 import Radio from "@material-ui/core/Radio";
 import RadioGroup from "@material-ui/core/RadioGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
+import  withRouter from "./../HOC/withRouter";
 
-
-export default class CreateRoomPage extends Component{
+ class CreateRoomPage extends Component{
     defaultVotes = 2;
     constructor(props){
         super(props);
@@ -34,6 +34,7 @@ export default class CreateRoomPage extends Component{
     }
 
     handleRoomButtonPressed = ()=>{
+        console.log('router',this.props);
         const requestOptions = {
             method:"POST",
             headers: {"Content-Type": "application/json"},
@@ -42,10 +43,9 @@ export default class CreateRoomPage extends Component{
                 guest_can_pause: this.state.guestCanPause,
             }),
         }
-        fetch("/api/create-room", requestOptions)
-            .then(response =>response.json())
-            .then((data) => console.log(data));
-    }
+       fetch("/api/create-room", requestOptions)
+      .then((response) => response.json())
+      .then((data) => this.props.history("/room/" + data.code));  }
 
 
     render() {
@@ -106,10 +106,12 @@ export default class CreateRoomPage extends Component{
                 </Grid>
                 <Grid item xs={12} align = "center">
                     <Button color = "secondary" variant="contained" to="/"
-                    component={Link}>
+                    element={Link}>
                        Back</Button>
                 </Grid>
             </Grid>
         );
     }
 }
+
+ export default withRouter(CreateRoomPage);
