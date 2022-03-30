@@ -46,6 +46,9 @@ import  withRouter from "./../HOC/withRouter";
        fetch("/api/create-room", requestOptions)
       .then((response) => response.json())
       .then((data) => this.props.history("/room/" + data.code));  }
+  
+  
+  //error somewhere
 
 
     render() {
